@@ -1,49 +1,141 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Trend Trader Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Surfs Up Trading Book</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
+      margin: 0;
       font-family: Arial;
       background: #0f172a;
       color: white;
-      text-align: center;
-      padding: 20px;
+      overflow: hidden;
     }
+
+    .book {
+      display: flex;
+      width: 500%;
+      height: 100vh;
+      transition: transform 0.5s ease;
+    }
+
+    .page {
+      width: 100%;
+      flex-shrink: 0;
+      padding: 40px;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
     .card {
       background: #1e293b;
       padding: 20px;
-      margin: 15px;
       border-radius: 10px;
+      margin: 15px 0;
+    }
+
+    .nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      background: #1e293b;
+    }
+
+    .nav button {
+      flex: 1;
+      padding: 15px;
+      border: none;
+      background: none;
+      color: white;
     }
   </style>
 </head>
+
 <body>
 
-<h1>📊 Trend Trader Dashboard</h1>
+<div class="book" id="book">
 
-<div class="card">
-  <h2>BTC Price</h2>
-  <p id="btc">Loading...</p>
+  <!-- PAGE 1: THESIS -->
+  <div class="page">
+    <h1>🌊 Surfs Up Thesis</h1>
+    <div class="card">
+      Market movement is like waves.
+      Trends build, peak, and break.
+    </div>
+    <div class="card">
+      The goal is not prediction — it’s positioning.
+    </div>
+  </div>
+
+  <!-- PAGE 2: METRICS -->
+  <div class="page">
+    <h1>📊 Key Metrics</h1>
+    <div class="card">Moving Averages</div>
+    <div class="card">Volume Expansion</div>
+    <div class="card">Momentum</div>
+  </div>
+
+  <!-- PAGE 3: SETUPS -->
+  <div class="page">
+    <h1>📈 Trade Setups</h1>
+    <div class="card">Breakout = Wave forming</div>
+    <div class="card">Pullback = Wave pause</div>
+  </div>
+
+  <!-- PAGE 4: EXAMPLE -->
+  <div class="page">
+    <h1>📉 Example Chart</h1>
+    <div class="card">
+      (Charts will go here next)
+    </div>
+  </div>
+
+  <!-- PAGE 5: NOTES -->
+  <div class="page">
+    <h1>📝 Notes</h1>
+    <div class="card">
+      Add your personal observations here
+    </div>
+  </div>
+
 </div>
 
-<div class="card">
-  <h2>ETH Price</h2>
-  <p id="eth">Loading...</p>
+<div class="nav">
+  <button onclick="goTo(0)">Thesis</button>
+  <button onclick="goTo(1)">Metrics</button>
+  <button onclick="goTo(2)">Setups</button>
+  <button onclick="goTo(3)">Charts</button>
+  <button onclick="goTo(4)">Notes</button>
 </div>
 
 <script>
-async function loadPrices() {
-  const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd');
-  const data = await res.json();
-  
-  document.getElementById('btc').innerText = "$" + data.bitcoin.usd;
-  document.getElementById('eth').innerText = "$" + data.ethereum.usd;
+let current = 0;
+
+function goTo(page) {
+  current = page;
+  document.getElementById("book").style.transform =
+    "translateX(-" + (page * 100) + "%)";
 }
 
-loadPrices();
-setInterval(loadPrices, 10000);
+// Swipe support
+let startX = 0;
+
+document.addEventListener("touchstart", e => {
+  startX = e.touches[0].clientX;
+});
+
+document.addEventListener("touchend", e => {
+  let endX = e.changedTouches[0].clientX;
+
+  if (startX - endX > 50 && current < 4) goTo(current + 1);
+  if (endX - startX > 50 && current > 0) goTo(current - 1);
+});
 </script>
 
 </body>
