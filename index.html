@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trend Trader Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      margin: 15px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>📊 Trend Trader Dashboard</h1>
+
+<div class="card">
+  <h2>BTC Price</h2>
+  <p id="btc">Loading...</p>
+</div>
+
+<div class="card">
+  <h2>ETH Price</h2>
+  <p id="eth">Loading...</p>
+</div>
+
+<script>
+async function loadPrices() {
+  const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd');
+  const data = await res.json();
+  
+  document.getElementById('btc').innerText = "$" + data.bitcoin.usd;
+  document.getElementById('eth').innerText = "$" + data.ethereum.usd;
+}
+
+loadPrices();
+setInterval(loadPrices, 10000);
+</script>
+
+</body>
+</html>
